@@ -2,46 +2,77 @@ package com.tw.apistackbase.controller;
 
 import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
 public class CompanyController {
-    private List<Employee> firstEmployees = Arrays.asList(
-            new Employee(1,"alibaba1",20,"male",6000),
-            new Employee(2,"aliba2",19,"male",7000),
-            new Employee(4,"alibayy",21,"female",8000));
-    private List<Employee> secondEmployees = Arrays.asList(
-            new Employee(1,"tengxun1",20,"male",9000),
-            new Employee(7,"ateng2",19,"female",7000));
-    private List<Company> companys = Arrays.asList(
-            new Company(1,"alibaba",firstEmployees,3),
-            new Company(2,"tengxun",secondEmployees,2));
+   @Autowired
+   private CompanyService companyService = new CompanyService();
     @GetMapping("/companies")
     public ResponseEntity getAllCompanies(){
-        return ResponseEntity.ok(companys);
+        return ResponseEntity.ok(companyService.getCompanys());
     }
     @GetMapping("/companies/{companyId}")
     public ResponseEntity getSpecificCompany(@PathVariable long companyId){
-        return ResponseEntity.ok(companys.stream()
-                .filter(company -> company.getCompanyId()==companyId)
-                .findFirst()
-                .orElse(null));
-    }
-    @GetMapping("/companies/{companyId}/employees")
-    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId){
-        Company specificCompany = companys.stream()
+        Company specificCompany = companyService.getCompanys().stream()
                 .filter(company -> company.getCompanyId()==companyId)
                 .findFirst()
                 .orElse(null);
         if(specificCompany!= null){
+            return ResponseEntity.ok(specificCompany);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/companies/{companyId}/employees")
+    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId) {
+        Company specificCompany = companyService.getCompanys().stream()
+                .filter(company -> company.getCompanyId() == companyId)
+                .findFirst()
+                .orElse(null);
+        if (specificCompany != null) {
             return ResponseEntity.ok(specificCompany.getEmployees());
+        }
+        return ResponseEntity.notFound().build();
+    }
+//    @GetMapping(path = "/companies",params = "page,pageSize")
+//    public String queryCompaniesByPage(@RequestParam("page") int page,@RequestParam("pageSize") int pageSize){
+//
+//        return String.valueOf(page+pageSize);
+//    }
+    @PostMapping("/companies")
+    public ResponseEntity createCompany(@RequestBody Company company){
+        company.setCompanyId(11);
+        companyService.getCompanys().add(company);
+        return ResponseEntity.ok(companyService.getCompanys().get(companyService.getCompanys().size()-1));
+    }
+    @PutMapping("/companies/{companyId}")
+    public ResponseEntity updateCompany(@PathVariable long companyId,@RequestBody Company company){
+        Company searchedCompany = companyService.getCompanys().stream()
+                .filter(company1 -> company1.getCompanyId()==companyId)
+                .findFirst()
+                .orElse(null);
+        if(searchedCompany!= null){
+            searchedCompany.setCompanyName(company.getCompanyName());
+            searchedCompany.setEmployeesNumber(company.getEmployeesNumber());
+            return ResponseEntity.ok(searchedCompany);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @DeleteMapping("/companies/{companyId}")
+    public ResponseEntity deleteEmployeesOfCompany(@PathVariable long companyId) {
+        Company searchedCompany = companyService.getCompanys().stream()
+                .filter(company1 -> company1.getCompanyId() == companyId)
+                .findFirst()
+                .orElse(null);
+        if (searchedCompany != null) {
+            List<Employee> employees = searchedCompany.getEmployees();
+            searchedCompany.setEmployees(null);
+            return ResponseEntity.ok(employees);
         }
         return ResponseEntity.notFound().build();
     }
