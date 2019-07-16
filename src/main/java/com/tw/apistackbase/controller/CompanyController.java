@@ -4,6 +4,7 @@ import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Array;
@@ -25,5 +26,23 @@ public class CompanyController {
     @GetMapping("/companies")
     public ResponseEntity getAllCompanies(){
         return ResponseEntity.ok(companys);
+    }
+    @GetMapping("/companies/{companyId}")
+    public ResponseEntity getSpecificCompany(@PathVariable long companyId){
+        return ResponseEntity.ok(companys.stream()
+                .filter(company -> company.getCompanyId()==companyId)
+                .findFirst()
+                .orElse(null));
+    }
+    @GetMapping("/companies/{companyId}/employees")
+    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId){
+        Company specificCompany = companys.stream()
+                .filter(company -> company.getCompanyId()==companyId)
+                .findFirst()
+                .orElse(null);
+        if(specificCompany!= null){
+            return ResponseEntity.ok(specificCompany.getEmployees());
+        }
+        return ResponseEntity.notFound().build();
     }
 }
