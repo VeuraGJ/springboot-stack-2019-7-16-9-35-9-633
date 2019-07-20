@@ -42,5 +42,12 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(16));
     }
+    @Test
+    public void should_return_five_companies__when_call_get_companies_api() throws Exception {
+        mockMvc.perform(get("/companies?page=1&pageSize=5"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
 
 }

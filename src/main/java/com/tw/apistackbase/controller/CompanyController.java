@@ -15,8 +15,16 @@ public class CompanyController {
    @Autowired
    private CompanyRepository companyRepository;
     @GetMapping("/companies")
-    public ResponseEntity getAllCompanies(){
-        return ResponseEntity.ok(companyRepository.getCompanys());
+    public ResponseEntity getAllCompanies(@RequestParam(value = "page",defaultValue = "0")int page,
+                                          @RequestParam(value = "pageSize",defaultValue = "0")int pageSize){
+        if(page == 0||pageSize == 0){
+            return ResponseEntity.ok(companyRepository.getCompanys());
+        }
+        int endIndex = page * pageSize;
+        if(endIndex > companyRepository.getCompanys().size()){
+            endIndex = companyRepository.getCompanys().size();
+        }
+        return ResponseEntity.ok(companyRepository.getCompanys().subList((page-1)*pageSize,endIndex));
     }
     @GetMapping("/companies/{companyId}")
     public ResponseEntity getSpecificCompany(@PathVariable long companyId){
@@ -40,11 +48,6 @@ public class CompanyController {
         }
         return ResponseEntity.notFound().build();
     }
-//    @GetMapping(path = "/companies",params = "page,pageSize")
-//    public String queryCompaniesByPage(@RequestParam("page") int page,@RequestParam("pageSize") int pageSize){
-//
-//        return String.valueOf(page+pageSize);
-//    }
 //    @PostMapping("/companies")
 //    public ResponseEntity createCompany(@RequestBody Company company){
 //        company.setCompanyId(11);
