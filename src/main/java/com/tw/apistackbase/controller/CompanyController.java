@@ -68,17 +68,17 @@ public class CompanyController {
         }
         return ResponseEntity.notFound().build();
     }
-//    @DeleteMapping("/companies/{companyId}")
-//    public ResponseEntity deleteEmployeesOfCompany(@PathVariable long companyId) {
-//        Company searchedCompany = companyService.getCompanys().stream()
-//                .filter(company1 -> company1.getCompanyId() == companyId)
-//                .findFirst()
-//                .orElse(null);
-//        if (searchedCompany != null) {
-//            List<Employee> employees = searchedCompany.getEmployees();
-//            searchedCompany.setEmployees(null);
-//            return ResponseEntity.ok(employees);
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @DeleteMapping("/companies/{companyId}")
+    public ResponseEntity deleteEmployeesOfCompany(@PathVariable long companyId) {
+        Company searchedCompany = companyRepository.getCompanys().stream()
+                .filter(company1 -> company1.getCompanyId() == companyId)
+                .findFirst()
+                .orElse(null);
+        if (searchedCompany != null) {
+            searchedCompany.setEmployeesNumber(0);
+            searchedCompany.setEmployees(null);
+            return ResponseEntity.ok(searchedCompany);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

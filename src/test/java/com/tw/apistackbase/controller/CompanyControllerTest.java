@@ -87,5 +87,12 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.employees.length()").value(1));
     }
+    @Test
+    public void should_return_update_company__when_call_delete_company_api() throws Exception {
+        mockMvc.perform(delete("/companies/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employeesNumber").value(0));
+    }
 
 }
