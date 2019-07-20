@@ -41,5 +41,12 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("lala1"));
     }
+    @Test
+    public void should_return_specific_gender_employees_when_call_get_specific_gender_employees_api() throws Exception {
+        mockMvc.perform(get("/employees?gender=male"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(5));
+    }
 
 }

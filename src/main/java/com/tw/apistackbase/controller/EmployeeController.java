@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class EmployeeController {
     @Autowired
@@ -34,5 +37,11 @@ public class EmployeeController {
             return ResponseEntity.ok(findEmployee);
         }
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping(value = "/employees",params = {"gender"})
+    public ResponseEntity<List<Employee>> getEmployeeByGender(@RequestParam(value = "gender",defaultValue = "male") String gender){
+        List<Employee> employees = employeeRepository.getEmployees().stream()
+                .filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+        return ResponseEntity.ok(employees);
     }
 }
