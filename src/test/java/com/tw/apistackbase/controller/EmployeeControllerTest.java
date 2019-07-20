@@ -34,5 +34,12 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(5));
     }
+    @Test
+    public void should_return_specific_employee_when_call_get_specific_employee_api() throws Exception {
+        mockMvc.perform(get("/employees/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("lala1"));
+    }
 
 }
