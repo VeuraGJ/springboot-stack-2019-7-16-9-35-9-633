@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,6 +56,15 @@ public class EmployeeControllerTest {
         Gson gson = new Gson();
         Employee employee = new Employee("weiwei",20,"female",9800);
         mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(employee)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("weiwei"));
+    }
+    @Test
+    public void should_return_update_employee_when_call_put_employees_api() throws Exception {
+        Gson gson = new Gson();
+        Employee employee = new Employee("weiwei",20,"female",9800);
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(employee)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("weiwei"));

@@ -47,4 +47,19 @@ public class EmployeeController {
         employeeRepository.getEmployees().add(employee);
         return ResponseEntity.ok(employeeRepository.getEmployees().get(employeeRepository.getEmployees().size()-1));
     }
+    @PutMapping("/employees/{employeeId}")
+    public ResponseEntity updateEmployee(@PathVariable long employeeId,@RequestBody Employee employee){
+        Employee updateEmployee = employeeRepository.getEmployees().stream()
+                .filter(employee1 -> employee1.getId() == employeeId)
+                .findFirst()
+                .orElse(null);
+        if (updateEmployee!=null){
+            updateEmployee.setName(employee.getName());
+            updateEmployee.setAge(employee.getAge());
+            updateEmployee.setGender(employee.getGender());
+            updateEmployee.setSalary(employee.getSalary());
+            return ResponseEntity.ok(updateEmployee);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
