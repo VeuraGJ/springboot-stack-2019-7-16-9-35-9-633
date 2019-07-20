@@ -69,5 +69,12 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("weiwei"));
     }
+    @Test
+    public void should_return_delete_employee_when_call_delete_employees_api() throws Exception {
+        mockMvc.perform(delete("/employees/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("lala1"));
+    }
 
 }

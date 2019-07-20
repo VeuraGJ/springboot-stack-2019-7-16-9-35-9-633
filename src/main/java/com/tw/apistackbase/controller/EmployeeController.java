@@ -62,4 +62,17 @@ public class EmployeeController {
         }
         return ResponseEntity.notFound().build();
     }
+    @DeleteMapping("/employees/{employeeId}")
+    public ResponseEntity deleteEmployee(@PathVariable long employeeId){
+        Employee deleteEmployee = employeeRepository.getEmployees().stream()
+                .filter(employee1 -> employee1.getId() == employeeId)
+                .findFirst()
+                .orElse(null);
+        if(deleteEmployee!=null){
+            employeeRepository.getEmployees().remove(deleteEmployee);
+            return ResponseEntity.ok(deleteEmployee);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
