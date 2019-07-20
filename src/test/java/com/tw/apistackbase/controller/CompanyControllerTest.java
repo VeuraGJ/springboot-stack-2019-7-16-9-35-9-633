@@ -13,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -70,6 +72,20 @@ public class CompanyControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("lala"));
+    }
+    @Test
+    public void should_return_update_company__when_call_put_company_api() throws Exception {
+        Gson gson = new Gson();
+        Company company = new Company();
+        company.setCompanyName("alibaba");
+        company.setEmployeesNumber(1);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee(22,"lala",23,"female",9000));
+        company.setEmployees(employeeList);
+        mockMvc.perform(put("/companies/1").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(company)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employees.length()").value(1));
     }
 
 }

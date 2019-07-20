@@ -54,19 +54,20 @@ public class CompanyController {
         companyRepository.getCompanys().add(company);
         return ResponseEntity.ok(companyRepository.getCompanys().get(companyRepository.getCompanys().size()-1));
     }
-//    @PutMapping("/companies/{companyId}")
-//    public ResponseEntity updateCompany(@PathVariable long companyId,@RequestBody Company company){
-//        Company searchedCompany = companyService.getCompanys().stream()
-//                .filter(company1 -> company1.getCompanyId()==companyId)
-//                .findFirst()
-//                .orElse(null);
-//        if(searchedCompany!= null){
-//            searchedCompany.setCompanyName(company.getCompanyName());
-//            searchedCompany.setEmployeesNumber(company.getEmployeesNumber());
-//            return ResponseEntity.ok(searchedCompany);
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @PutMapping("/companies/{companyId}")
+    public ResponseEntity updateCompany(@PathVariable long companyId,@RequestBody Company company){
+        Company searchedCompany = companyRepository.getCompanys().stream()
+                .filter(company1 -> company1.getCompanyId()==companyId)
+                .findFirst()
+                .orElse(null);
+        if(searchedCompany!= null){
+            searchedCompany.setCompanyName(company.getCompanyName());
+            searchedCompany.setEmployeesNumber(company.getEmployeesNumber());
+            searchedCompany.setEmployees(company.getEmployees());
+            return ResponseEntity.ok(searchedCompany);
+        }
+        return ResponseEntity.notFound().build();
+    }
 //    @DeleteMapping("/companies/{companyId}")
 //    public ResponseEntity deleteEmployeesOfCompany(@PathVariable long companyId) {
 //        Company searchedCompany = companyService.getCompanys().stream()
