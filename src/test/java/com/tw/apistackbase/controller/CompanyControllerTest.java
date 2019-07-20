@@ -35,5 +35,12 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("alibaba"));
     }
+    @Test
+    public void should_return_employees_of_specific_company_when_call_get_employees_of_specific_company_api() throws Exception {
+        mockMvc.perform(get("/companies/1/employees"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(16));
+    }
 
 }

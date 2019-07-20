@@ -29,17 +29,17 @@ public class CompanyController {
         }
         return ResponseEntity.notFound().build();
     }
-//    @GetMapping("/companies/{companyId}/employees")
-//    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId) {
-//        Company specificCompany = companyService.getCompanys().stream()
-//                .filter(company -> company.getCompanyId() == companyId)
-//                .findFirst()
-//                .orElse(null);
-//        if (specificCompany != null) {
-//            return ResponseEntity.ok(specificCompany.getEmployees());
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @GetMapping("/companies/{companyId}/employees")
+    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId) {
+        Company specificCompany = companyRepository.getCompanys().stream()
+                .filter(company -> company.getCompanyId() == companyId)
+                .findFirst()
+                .orElse(null);
+        if (specificCompany != null) {
+            return ResponseEntity.ok(specificCompany.getEmployees());
+        }
+        return ResponseEntity.notFound().build();
+    }
 //    @GetMapping(path = "/companies",params = "page,pageSize")
 //    public String queryCompaniesByPage(@RequestParam("page") int page,@RequestParam("pageSize") int pageSize){
 //
