@@ -18,17 +18,17 @@ public class CompanyController {
     public ResponseEntity getAllCompanies(){
         return ResponseEntity.ok(companyRepository.getCompanys());
     }
-//    @GetMapping("/companies/{companyId}")
-//    public ResponseEntity getSpecificCompany(@PathVariable long companyId){
-//        Company specificCompany = companyService.getCompanys().stream()
-//                .filter(company -> company.getCompanyId()==companyId)
-//                .findFirst()
-//                .orElse(null);
-//        if(specificCompany!= null){
-//            return ResponseEntity.ok(specificCompany);
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @GetMapping("/companies/{companyId}")
+    public ResponseEntity getSpecificCompany(@PathVariable long companyId){
+        Company specificCompany = companyRepository.getCompanys().stream()
+                .filter(company -> company.getCompanyId()==companyId)
+                .findFirst()
+                .orElse(null);
+        if(specificCompany!= null){
+            return ResponseEntity.ok(specificCompany);
+        }
+        return ResponseEntity.notFound().build();
+    }
 //    @GetMapping("/companies/{companyId}/employees")
 //    public ResponseEntity getEmployeesOfSpecificCompany(@PathVariable long companyId) {
 //        Company specificCompany = companyService.getCompanys().stream()

@@ -18,7 +18,7 @@ public class CompanyRepository {
 
     public CompanyRepository() {
         for(int i=0;i<16;i++){
-            firstEmployees.add(new Employee(1,"alibaba"+i,20,"male",9000));
+            firstEmployees.add(new Employee(i,"alibaba"+i,20,"male",9000));
         }
         companys.add(new Company(1,"alibaba",firstEmployees,3));
         companys.add(new Company(2,"tengxun",secondEmployees,2));

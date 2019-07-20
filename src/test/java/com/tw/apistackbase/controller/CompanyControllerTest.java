@@ -22,11 +22,18 @@ public class CompanyControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Test
-    public void should_return_companies() throws Exception {
+    public void should_return_companies_when_call_get_companies_api() throws Exception {
         mockMvc.perform(get("/companies"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
+    }
+    @Test
+    public void should_return_specific_company_when_call_get_specific_company_api() throws Exception {
+        mockMvc.perform(get("/companies/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("alibaba"));
     }
 
 }
