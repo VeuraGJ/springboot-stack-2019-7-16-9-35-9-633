@@ -4,10 +4,7 @@ import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.respository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,5 +40,11 @@ public class EmployeeController {
         List<Employee> employees = employeeRepository.getEmployees().stream()
                 .filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
         return ResponseEntity.ok(employees);
+    }
+    @PostMapping("/employees")
+    public ResponseEntity addEmployee(@RequestBody Employee employee){
+        employee.setId(12);
+        employeeRepository.getEmployees().add(employee);
+        return ResponseEntity.ok(employeeRepository.getEmployees().get(employeeRepository.getEmployees().size()-1));
     }
 }
