@@ -48,12 +48,12 @@ public class CompanyController {
         }
         return ResponseEntity.notFound().build();
     }
-//    @PostMapping("/companies")
-//    public ResponseEntity createCompany(@RequestBody Company company){
-//        company.setCompanyId(11);
-//        companyService.getCompanys().add(company);
-//        return ResponseEntity.ok(companyService.getCompanys().get(companyService.getCompanys().size()-1));
-//    }
+    @PostMapping("/companies")
+    public ResponseEntity createCompany(@RequestBody Company company){
+        company.setCompanyId(11);
+        companyRepository.getCompanys().add(company);
+        return ResponseEntity.ok(companyRepository.getCompanys().get(companyRepository.getCompanys().size()-1));
+    }
 //    @PutMapping("/companies/{companyId}")
 //    public ResponseEntity updateCompany(@PathVariable long companyId,@RequestBody Company company){
 //        Company searchedCompany = companyService.getCompanys().stream()
